@@ -27,5 +27,5 @@ st.set_page_config(
 )
 
 # Menampilkan logo di sidebar
-st.sidebar.image('kognisi_logo.png', use_column_width=True)
+st.sidebar.image('logo.png', use_column_width=True)
 
