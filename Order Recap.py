@@ -26,7 +26,9 @@ if uploaded_file is not None:
         
         # Konversi kolom tanggal ke format datetime jika belum
         if 'Waktu Pesanan Selesai' in df.columns:
-            df['Waktu Pesanan Selesai'] = pd.to_datetime(df['Waktu Pesanan Selesai']).dt.date
+            df['Waktu Pesanan Selesai'] = pd.to_datetime(df['Waktu Pesanan Selesai'], errors='coerce')
+            df = df.dropna(subset=['Waktu Pesanan Selesai'])  # Hapus baris dengan NaT
+            df['Waktu Pesanan Selesai'] = df['Waktu Pesanan Selesai'].dt.date
         
         # Menampilkan data
         st.write("### Data yang diunggah (Sheet: Data Orders):")
@@ -36,12 +38,13 @@ if uploaded_file is not None:
         st.write("### Filter Tanggal")
         col1, col2 = st.columns(2)
         
-        with col1:
-            start_date = st.date_input("Dari Tanggal", min(df['Waktu Pesanan Selesai']), min(df['Waktu Pesanan Selesai']))
-        with col2:
-            end_date = st.date_input("Sampai Tanggal", max(df['Waktu Pesanan Selesai']), max(df['Waktu Pesanan Selesai']))
-        
-        df = df[(df['Waktu Pesanan Selesai'] >= start_date) & (df['Waktu Pesanan Selesai'] <= end_date)]
+        if not df.empty:
+            with col1:
+                start_date = st.date_input("Dari Tanggal", min(df['Waktu Pesanan Selesai']), min(df['Waktu Pesanan Selesai']))
+            with col2:
+                end_date = st.date_input("Sampai Tanggal", max(df['Waktu Pesanan Selesai']), max(df['Waktu Pesanan Selesai']))
+            
+            df = df[(df['Waktu Pesanan Selesai'] >= start_date) & (df['Waktu Pesanan Selesai'] <= end_date)]
         
         # Add filters to the sidebar
         st.sidebar.header('Filters')
