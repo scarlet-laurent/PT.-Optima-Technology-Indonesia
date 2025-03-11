@@ -29,23 +29,23 @@ if uploaded_file is not None:
         
         # Add filters to the sidebar
         st.sidebar.header('Filters')
-        no_pesanan = st.sidebar.text_input("No. Pesanan")
-        no_resi = st.sidebar.text_input("No. Resi")
-        opsi_pengiriman = st.sidebar.text_input("Opsi Pengiriman")
-        metode_pembayaran = st.sidebar.text_input("Metode Pembayaran")
-        provinsi = st.sidebar.text_input("Provinsi")
+        no_pesanan = st.sidebar.multiselect("No. Pesanan", options=df["No. Pesanan"].dropna().unique())
+        no_resi = st.sidebar.multiselect("No. Resi", options=df["No. Resi"].dropna().unique())
+        opsi_pengiriman = st.sidebar.multiselect("Opsi Pengiriman", options=df["Opsi Pengiriman"].dropna().unique())
+        metode_pembayaran = st.sidebar.multiselect("Metode Pembayaran", options=df["Metode Pembayaran"].dropna().unique())
+        provinsi = st.sidebar.multiselect("Provinsi", options=df["Provinsi"].dropna().unique())
         
         # Filter data berdasarkan input pengguna
         if no_pesanan:
-            df = df[df["No. Pesanan"].astype(str).str.contains(no_pesanan, na=False, case=False)]
+            df = df[df["No. Pesanan"].isin(no_pesanan)]
         if no_resi:
-            df = df[df["No. Resi"].astype(str).str.contains(no_resi, na=False, case=False)]
+            df = df[df["No. Resi"].isin(no_resi)]
         if opsi_pengiriman:
-            df = df[df["Opsi Pengiriman"].astype(str).str.contains(opsi_pengiriman, na=False, case=False)]
+            df = df[df["Opsi Pengiriman"].isin(opsi_pengiriman)]
         if metode_pembayaran:
-            df = df[df["Metode Pembayaran"].astype(str).str.contains(metode_pembayaran, na=False, case=False)]
+            df = df[df["Metode Pembayaran"].isin(metode_pembayaran)]
         if provinsi:
-            df = df[df["Provinsi"].astype(str).str.contains(provinsi, na=False, case=False)]
+            df = df[df["Provinsi"].isin(provinsi)]
         
         st.write("### Data setelah filter:")
         st.dataframe(df)
