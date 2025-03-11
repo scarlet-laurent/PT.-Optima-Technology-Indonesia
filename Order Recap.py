@@ -95,20 +95,17 @@ if uploaded_file is not None:
         st.dataframe(df)
         
         # Active Users section
-        st.header('Active Users', divider='gray')
+        st.header('Order Recap', divider='gray')
         
         # Perhitungan metrik berdasarkan filter
-        total_orders = df['No. Pesanan'].count()
         completed_orders = df['Waktu Pesanan Selesai'].count()
         fake_orders = df[df['Fake List Order'] == 'Fake Order']['No. Pesanan'].count() if 'Fake List Order' in df.columns else 0
         
         # Display metrics column
-        col1, col2, col3 = st.columns(3)
+        col1, col2 = st.columns(3)
         with col1:
-            st.markdown(f"<p style='font-size: 20px; text-align: center;'><strong>Total Pesanan: <span style='color: red;'>{total_orders:,}</span></strong></p>", unsafe_allow_html=True)
-        with col2:
             st.markdown(f"<p style='font-size: 20px; text-align: center;'><strong>Total Pesanan Selesai: <span style='color: red;'>{completed_orders:,}</span></strong></p>", unsafe_allow_html=True)
-        with col3:
+        with col2:
             st.markdown(f"<p style='font-size: 20px; text-align: center;'><strong>Fake Order: <span style='color: red;'>{fake_orders:,}</span></strong></p>", unsafe_allow_html=True)
     
     else:
