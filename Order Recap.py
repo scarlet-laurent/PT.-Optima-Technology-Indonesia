@@ -9,7 +9,7 @@ st.set_page_config(
 )
 
 # Menampilkan logo di sidebar
-st.sidebar.image('logo.png', use_column_width=True)
+st.sidebar.image('logo.png', use_container_width=True)
 
 # Upload file Excel
 st.title("Dashboard Analisis Penjualan")
