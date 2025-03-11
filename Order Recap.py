@@ -41,11 +41,12 @@ if uploaded_file is not None:
             st.write("### Pilih Rentang Tanggal")
             col1, col2 = st.columns(2)
             with col1:
-                st.session_state.from_date = st.date_input("Dari", st.session_state.from_date)
+                from_date = st.date_input("Dari", st.session_state.from_date)
             with col2:
-                st.session_state.to_date = st.date_input("Sampai", st.session_state.to_date)
+                to_date = st.date_input("Sampai", st.session_state.to_date)
             
-            df = df[(df["Tanggal Pesanan Selesai"] >= st.session_state.from_date) & (df["Tanggal Pesanan Selesai"] <= st.session_state.to_date)]
+            # Pastikan tipe data sesuai sebelum filtering
+            df = df[(df["Tanggal Pesanan Selesai"] >= from_date) & (df["Tanggal Pesanan Selesai"] <= to_date)]
         
         # Menampilkan data
         st.write("### Data yang diunggah (Sheet: Data Orders):")
