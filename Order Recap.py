@@ -19,3 +19,13 @@ if uploaded_file is not None:
         st.dataframe(df)
     else:
         st.warning("Sheet 'Data Orders' tidak ditemukan dalam file Excel.")
+
+# Set judul dan ikon pada browser
+st.set_page_config(
+    page_title='Data Penjualan PT Optima Technology Indonesia',
+    page_icon='📈',
+)
+
+# Menampilkan logo di sidebar
+st.sidebar.image('kognisi_logo.png', use_column_width=True)
+
