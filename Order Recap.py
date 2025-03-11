@@ -23,6 +23,30 @@ if uploaded_file is not None:
     if "Data Orders" in xls.sheet_names:
         df = pd.read_excel(xls, sheet_name="Data Orders")
         
+        # Konversi kolom tanggal jika ada
+        if "Waktu Pesanan Selesai" in df.columns:
+            df["Tanggal Pesanan Selesai"] = pd.to_datetime(df["Waktu Pesanan Selesai"]).dt.date
+            
+            # Tentukan nilai min dan max untuk tanggal
+            min_value = df["Tanggal Pesanan Selesai"].min()
+            max_value = df["Tanggal Pesanan Selesai"].max()
+
+            # Inisialisasi session state untuk filter tanggal
+            if 'from_date' not in st.session_state:
+                st.session_state.from_date = min_value
+            if 'to_date' not in st.session_state:
+                st.session_state.to_date = max_value
+            
+            # Filter tanggal di luar sidebar
+            st.write("### Pilih Rentang Tanggal")
+            col1, col2 = st.columns(2)
+            with col1:
+                st.session_state.from_date = st.date_input("Dari", st.session_state.from_date)
+            with col2:
+                st.session_state.to_date = st.date_input("Sampai", st.session_state.to_date)
+            
+            df = df[(df["Tanggal Pesanan Selesai"] >= st.session_state.from_date) & (df["Tanggal Pesanan Selesai"] <= st.session_state.to_date)]
+        
         # Menampilkan data
         st.write("### Data yang diunggah (Sheet: Data Orders):")
         st.dataframe(df)
