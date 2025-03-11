@@ -73,7 +73,6 @@ if uploaded_file is not None:
         if 'Waktu Pesanan Selesai' in df.columns and 'No. Pesanan' in df.columns:
             completed_orders = df['No. Pesanan'].nunique()
             fake_orders = df[df.get('Fake List Order', '') == 'Fake Order']['No. Pesanan'].nunique() if 'Fake List Order' in df.columns else 0
-            fake_order_percentage = (fake_orders / completed_orders * 100) if completed_orders > 0 else 0
 
             col1, col2 = st.columns(2)
             with col1:
@@ -86,7 +85,7 @@ if uploaded_file is not None:
             with col2:
                 st.markdown(f"""
                     <p style='font-size: 20px; text-align: center;'>
-                        <strong>Fake Order: <span style='color: red;'>{fake_orders:,} ({fake_order_percentage:.2f}%)</span></strong>
+                        <strong>Fake Order: <span style='color: red;'>{fake_orders:,}</span></strong>
                     </p>
                 """, unsafe_allow_html=True)
         else:
