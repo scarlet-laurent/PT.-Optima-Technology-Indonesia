@@ -97,8 +97,8 @@ if uploaded_file is not None:
         # Active Users section
         st.header('Order Recap', divider='gray')
         
-        # Perhitungan metrik
-        total_orders = df['Waktu Pesanan Dibuat'].count()
+        # Perhitungan metrik sebelum filter
+        total_orders = xls.parse("Data Orders")["No. Pesanan"].count()
         completed_orders = df['Waktu Pesanan Selesai'].count()
         fake_orders = df[df['Fake List Order'] == 'Fake Order']['No. Pesanan'].count() if 'Fake List Order' in df.columns else 0
         
