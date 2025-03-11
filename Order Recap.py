@@ -98,7 +98,7 @@ if uploaded_file is not None:
         st.header('Active Users', divider='gray')
         
         # Perhitungan metrik
-        total_orders = df['No. Pesanan'].nunique()
+        total_orders = df['No. Pesanan'].count()
         completed_orders = df['Waktu Pesanan Selesai'].count()
         fake_orders = df[df['Fake List Order'] == 'Fake Order']['No. Pesanan'].nunique() if 'Fake List Order' in df.columns else 0
         
