@@ -61,7 +61,7 @@ if uploaded_file is not None:
                     st.session_state.to_date = min(datetime.now().date(), max_value)
         
         # Filter berdasarkan tanggal (di luar sidebar)
-        st.write("### Filter Tanggal")
+        st.write("### Waktu Pesanan Selesai")
         col1, col2 = st.columns(2)
         
         with col1:
@@ -93,5 +93,23 @@ if uploaded_file is not None:
         
         st.write("### Data setelah filter:")
         st.dataframe(df)
+        
+        # Active Users section
+        st.header('Active Users', divider='gray')
+        
+        # Perhitungan metrik
+        total_orders = df['No. Pesanan'].nunique()
+        completed_orders = df['Waktu Pesanan Selesai'].count()
+        fake_orders = df[df['No. Pesanan'].isin(xls.sheet_names)]['No. Pesanan'].nunique() if "Fake List Order" in xls.sheet_names else 0
+        
+        # Display metrics column
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.markdown(f"<p style='font-size: 20px; text-align: center;'><strong>Total Pesanan: <span style='color: red;'>{total_orders:,}</span></strong></p>", unsafe_allow_html=True)
+        with col2:
+            st.markdown(f"<p style='font-size: 20px; text-align: center;'><strong>Total Pesanan Selesai: <span style='color: red;'>{completed_orders:,}</span></strong></p>", unsafe_allow_html=True)
+        with col3:
+            st.markdown(f"<p style='font-size: 20px; text-align: center;'><strong>Fake Order: <span style='color: red;'>{fake_orders:,}</span></strong></p>", unsafe_allow_html=True)
+    
     else:
         st.warning("Sheet 'Data Orders' tidak ditemukan dalam file Excel.")
