@@ -98,7 +98,7 @@ if uploaded_file is not None:
         st.header('Order Recap', divider='gray')
         
         # Perhitungan metrik
-        total_orders = df['No. Pesanan'].count()
+        total_orders = df['Waktu Pesanan Dibuat'].count()
         completed_orders = df['Waktu Pesanan Selesai'].count()
         fake_orders = df[df['Fake List Order'] == 'Fake Order']['No. Pesanan'].count() if 'Fake List Order' in df.columns else 0
         
