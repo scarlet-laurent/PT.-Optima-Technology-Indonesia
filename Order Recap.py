@@ -61,7 +61,7 @@ if uploaded_file is not None:
                     st.session_state.to_date = min(datetime.now().date(), max_value)
         
         # Filter berdasarkan tanggal (di luar sidebar)
-        st.write("### Filter Tanggal")
+        st.write("### Waktu Pesanan Selesai")
         col1, col2 = st.columns(2)
         
         with col1:
@@ -95,12 +95,12 @@ if uploaded_file is not None:
         st.dataframe(df)
         
         # Active Users section
-        st.header('Active Users', divider='gray')
+        st.header('Order Recap', divider='gray')
         
         # Perhitungan metrik
         total_orders = df['No. Pesanan'].count()
         completed_orders = df['Waktu Pesanan Selesai'].count()
-        fake_orders = df[df['Fake List Order'] == 'Fake Order']['No. Pesanan'].nunique() if 'Fake List Order' in df.columns else 0
+        fake_orders = df[df['Fake List Order'] == 'Fake Order']['No. Pesanan'].count() if 'Fake List Order' in df.columns else 0
         
         # Display metrics column
         col1, col2, col3 = st.columns(3)
