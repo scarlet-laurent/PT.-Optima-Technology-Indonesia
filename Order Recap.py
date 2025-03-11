@@ -34,42 +34,42 @@ if uploaded_file is not None:
         st.write("### Data yang diunggah (Sheet: Data Orders):")
         st.dataframe(df)
         
-        # Filter berdasarkan tanggal (di luar sidebar)
-        st.write("### Filter Tanggal")
-        col1, col2 = st.columns(2)
-        
-        if not df.empty:
-            min_value = min(df['Waktu Pesanan Selesai'])
-            max_value = max(df['Waktu Pesanan Selesai'])
-            
-            with col1:
-                start_date = st.date_input("Dari Tanggal", min_value, min_value)
-            with col2:
-                end_date = st.date_input("Sampai Tanggal", max_value, max_value)
-            
-            df = df[(df['Waktu Pesanan Selesai'] >= start_date) & (df['Waktu Pesanan Selesai'] <= end_date)]
-        
         # Tampilkan tombol shortcut untuk filter
         st.write("**Choose the data period:**")
         col1, col2, col3 = st.columns(3)
         
+        if not df.empty:
+            min_value = min(df['Waktu Pesanan Selesai'])
+            max_value = max(df['Waktu Pesanan Selesai'])
+        
+            with col1:
+                if st.button('Lifetime'):
+                    st.session_state.from_date = min_value
+                    st.session_state.to_date = max_value
+        
+            with col2:
+                if st.button('This Year'):
+                    current_year = datetime.now().year
+                    st.session_state.from_date = datetime(current_year, 1, 1).date()
+                    st.session_state.to_date = min(datetime.now().date(), max_value)
+        
+            with col3:
+                if st.button('This Month'):
+                    current_year = datetime.now().year
+                    current_month = datetime.now().month
+                    st.session_state.from_date = datetime(current_year, current_month, 1).date()
+                    st.session_state.to_date = min(datetime.now().date(), max_value)
+        
+        # Filter berdasarkan tanggal (di luar sidebar)
+        st.write("### Filter Tanggal")
+        col1, col2 = st.columns(2)
+        
         with col1:
-            if st.button('Lifetime'):
-                st.session_state.from_date = min_value
-                st.session_state.to_date = max_value
-        
+            start_date = st.date_input("Dari Tanggal", st.session_state.get('from_date', min_value))
         with col2:
-            if st.button('This Year'):
-                current_year = datetime.now().year
-                st.session_state.from_date = datetime(current_year, 1, 1).date()
-                st.session_state.to_date = min(datetime.now().date(), max_value)
+            end_date = st.date_input("Sampai Tanggal", st.session_state.get('to_date', max_value))
         
-        with col3:
-            if st.button('This Month'):
-                current_year = datetime.now().year
-                current_month = datetime.now().month
-                st.session_state.from_date = datetime(current_year, current_month, 1).date()
-                st.session_state.to_date = min(datetime.now().date(), max_value)
+        df = df[(df['Waktu Pesanan Selesai'] >= start_date) & (df['Waktu Pesanan Selesai'] <= end_date)]
         
         # Add filters to the sidebar
         st.sidebar.header('Filters')
